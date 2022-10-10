@@ -14,7 +14,7 @@ const app = new express();
 app.use(express.json());
 
 app.use(cors({
-    origin:"*"
+    origin: "*"
 }));
 
 
@@ -23,20 +23,18 @@ app.get("/", (req, res) => {
 });
 
 app.get("/shoppinglist", async (req, res) => {
-    try{
+    try {
         const shoppinglist = [];
         const query = await db.collection("shoppinglist").get();
 
         query.forEach(doc => {
-                shoppinglist.push({
-                    id: doc.id,
-                    ...doc.data()
-                })
-                res.json({list: shoppinglist})
-               
+            shoppinglist.push({
+                id: doc.id,
+                ...doc.data()
+            })
+
         })
-        
-console.log(shoppinglist)
+        res.json({ lists: shoppinglist })
 
     }
     catch (err) {
@@ -45,17 +43,17 @@ console.log(shoppinglist)
 });
 
 app.put("/shoppinglist", async (req, res) => {
-    const {id} = req.body;
+    const { id } = req.body;
 
     try {
-const ref = await db.collection("shoppinglist").doc(id).get();
+        const ref = await db.collection("shoppinglist").doc(id).get();
 
-res.json(ref.data())
+        res.json(ref.data())
     }
 
-catch (err) {
-    console.log(err)
-}
+    catch (err) {
+        console.log(err)
+    }
 })
 
 
